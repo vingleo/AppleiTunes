@@ -48,7 +48,7 @@ struct ItunesAPI {
                     return .failure(ItunesError.invalidJSONData)
             }
             
-            
+            print(entryArray)
             
             var finalPhotos = [Photo]()
             for entryJSON in entryArray {
@@ -80,7 +80,6 @@ struct ItunesAPI {
             return nil
         }
             return Photo(trackName: trackName, artistID: artistID, remoteURL: url, releaseDate: dateTaken)
-        
         
     }
     

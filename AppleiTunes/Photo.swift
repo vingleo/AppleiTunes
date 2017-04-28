@@ -14,7 +14,8 @@ class Photo {
     let artistID:String
     let releaseDate:Date
     
-    init(trackName:String,artistID:String,remoteURL:URL,releaseDate:Date) {
+    init(trackName:String,artistID:String,remoteURL:URL,releaseDate:Date)
+    {
         self.trackName = trackName
         self.artistID = artistID
         self.remoteURL = remoteURL
