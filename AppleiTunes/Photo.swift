@@ -11,13 +11,13 @@ import Foundation
 class Photo {
     let trackName:String
     let remoteURL:URL
-    let artistID:String
+    let artistId:String
     let releaseDate:Date
     
-    init(trackName:String,artistID:String,remoteURL:URL,releaseDate:Date)
+    init(trackName:String,artistId:String,remoteURL:URL ,releaseDate:Date)
     {
         self.trackName = trackName
-        self.artistID = artistID
+        self.artistId = artistId
         self.remoteURL = remoteURL
         self.releaseDate = releaseDate
     }

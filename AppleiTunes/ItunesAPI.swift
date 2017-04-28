@@ -38,23 +38,41 @@ struct ItunesAPI {
     
     static func photos(fromJSON data:Data) -> PhotosResult {
         do {
+            
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
             
             guard
-            let jsonDictionary = jsonObject as? [AnyHashable:Any],
+                let jsonDictionary = jsonObject as? [AnyHashable:Any],
             //let feed = jsonDictionary["results"] as? [String:Any],
+                //let entryDictionary = jsonDictionary["results"] as? [String:Any],
                 let entryArray = jsonDictionary["results"] as? [[String:Any]] else {
+
                     // The JSON structure doesn't match our expections
                     return .failure(ItunesError.invalidJSONData)
             }
-            
+            //print(jsonDictionary)
+            //print(feed)
             print(entryArray)
             
             var finalPhotos = [Photo]()
             for entryJSON in entryArray {
+                print("entryJSON is \(entryJSON)")
                 if let photo = photo(fromJson: entryJSON) {
+//                    print("Artist ID is \(photo.artistID)")
+//                    print(photo.releaseDate)
+//                    print(photo.remoteURL)
+//                    print(photo.trackName)
                     finalPhotos.append(photo)
                 }
+//                print("--------------------")
+//                print(finalPhotos[0].artistID)
+//                print(finalPhotos[0].releaseDate)
+//                print(finalPhotos[0].remoteURL)
+//                print(finalPhotos[0].trackName)
+//
+//
+//                print("--------------------")
+                print("FinalPhotos is \(finalPhotos)")
             }
             if finalPhotos.isEmpty && !entryArray.isEmpty {
                 // We weren't able to parse any of the photos
@@ -67,19 +85,29 @@ struct ItunesAPI {
         }
     }
     
-    private static func photo(fromJson json: [String : Any]) -> Photo? {
+    private static func photo(fromJson json:[String : Any]) -> Photo? {
+            print("JSON is \(json)")
+        let artistIDTemp = json["artistId"] as? String
+        print("artistID-temp is \(artistIDTemp)")
         guard
-            let artistID = json["artistID"] as? String,
+            let artistId = json["artistId"] as? String,
             let trackName = json["trackName"] as? String,
             let releaseDate = json["releaseDate"] as? String,
             let remoteURLString = json["artworkUrl100"] as? String,
             let url = URL(string: remoteURLString),
-            let dateTaken = dateFormatter.date(from: releaseDate) else {
-            
+            let dateTaken = dateFormatter.date(from: releaseDate)
+            else {
             //Don't have enough information to construct a Photo
+            print("There are not any properties.")
             return nil
         }
-            return Photo(trackName: trackName, artistID: artistID, remoteURL: url, releaseDate: dateTaken)
+//        print("ArtistID is : \(artistID)")
+//        print("TrackName is : \(trackName)")
+//        print("ReleaseDate is : \(releaseDate)")
+//        print("RemoteURLString is : \(remoteURLString)")
+//        print("URL is : \(url)")
+//        print("DateTaken is : \(dateTaken)")
+        return Photo(trackName: trackName, artistId: artistId, remoteURL: url , releaseDate: dateTaken)
         
     }
     
